@@ -157,6 +157,7 @@ class CHARM_AD(BaseDetector):
         self.client = CharmClient(
             base_url="http://ab778f946c58843afa52a72d5af0657a-1381817648.us-west-2.elb.amazonaws.com:8080",
             timeout=120,
+            api_key="token",
         )
         self.train_embeddings_ = None
 
