@@ -97,9 +97,6 @@ Multi_algo_HP_dict = {
         'n_dim': [1, 0.1, 0.3, 0.5, 0.7],
         'n_neighbor': [1, 5, 10, 15],
     },
-    'PaAno_PAI': {
-        'patch_size': [32, 64, 128],
-    },
 }
 
 
@@ -134,8 +131,6 @@ Optimal_Multi_algo_HP_dict = {
     'MMPAD': {'n_dim': 0.7, 'n_neighbor': 15},
     'CHARM': {"window_size": 128, "k": 3, "pointwise_agg": "mean", "stride": 1, "train_stride": 1, "min_window": 64},
     'StreamVAE': {'win_size': 100, 'latent_dim': 64, 'batch_size': 128, 'epochs': 50, 'patience': 10, 'lr': 1e-3, 'validation_size': 0.2, 'target_kl': 100.0, 'event_l1_weight': 1e-3},
-    'PaAno_PAI': {'score_recipe': 'a28', 'train_zscore': False, 'patch_size': 64, 'stride': 1, 'num_iters': 200, 'batch_size': 512, 'embed_batch_size': 512, 'distance_batch_size': 512, 'lr': 1e-4, 'seed': 2021, 'calib_seed': 42, 'calib_frac': 0.20, 'bank_seed': 42, 'pretext_step': 64, 'num_rand_patches': 5, 'temperature': 1.0, 'alpha': 10.0, 'ema_weight': 0.5, 'triplet_margin': 0.5, 'positive_radius': 2, 'embed_dim': 64, 'projection_dim': 256, 'use_revin': True, 'use_teacher': True, 'bank_k': 1024, 'top_k': 3, 'mag_weight_unit_eu': 0.667, 't2_weight_unit_eu': 0.2, 't2_window': 32, 'device': 'auto'},
-    'SHADE': {'base_url': 'https://shade.avara-ai.com', 'split': 'eval', 'prefix_precision_guard': True, 'prefix_precision_guard_min_length': 50000, 'prefix_precision_guard_anchors': 1},
 }
 
 
@@ -259,6 +254,12 @@ Uni_algo_HP_dict = {
     'Time_RCD': {
         'win_size': [15000]
     },
+    'TimeRCD_MAFT': {
+        'win_size': [64, 512],
+        'weight': [0.01, 0.1, 0.2, 0.5, 0.6, 0.99],
+        'lr_adapter': [1e-3, 5e-4],
+        'epochs_adapter': [5],
+    },
     'xLSTMAD': {
         'window_size': [50, 100, 150],
         'lr': [0.0005, 0.001],
@@ -266,18 +267,6 @@ Uni_algo_HP_dict = {
     },
     'MMPAD': {
         'n_neighbor': [1, 5, 10, 15],
-    },
-    'HSF': {
-        'window': [64, 128, 256],
-    },
-    'HSF_U': {
-        'window': [64, 128, 256],
-    },
-    'HSF_Causal': {
-        'window': [64, 128, 256],
-    },
-    'PaAno_PAI': {
-        'patch_size': [32, 64, 128],
     },
 }
 
@@ -320,6 +309,7 @@ Optimal_Uni_algo_HP_dict = {
     'MOMENT_FT': {'win_size': 64},
     'M2N2': {},
     'Time_RCD': {'win_size': 15000, 'batch_size': 64},
+    'TimeRCD_MAFT': {'win_size': 512, 'weight': 0.2, 'lr_adapter': 1e-3, 'epochs_adapter': 5},
     'TSPulse_ZS': {'win_size': 96, 
                    'prediction_mode': 'time'},
     'TSPulse_FT': {'win_size': 96, 
@@ -329,9 +319,4 @@ Optimal_Uni_algo_HP_dict = {
     'MMPAD': {'n_neighbor': 5},
     'CHARM': {"window_size": 128, "k": 3, "pointwise_agg": "mean", "stride": 1, "train_stride": 1, "min_window": 64},
     'StreamVAE': {'win_size': 100, 'latent_dim': 64, 'batch_size': 128, 'epochs': 50, 'patience': 10, 'lr': 1e-3, 'validation_size': 0.2, 'target_kl': 100.0, 'event_l1_weight': 1e-3},
-    'HSF': {},
-    'HSF_U': {},
-    'HSF_Causal': {},
-    'PaAno_PAI': {'score_recipe': 'a28', 'train_zscore': False, 'patch_size': 64, 'stride': 1, 'num_iters': 200, 'batch_size': 512, 'embed_batch_size': 512, 'distance_batch_size': 512, 'lr': 1e-4, 'seed': 2021, 'calib_seed': 42, 'calib_frac': 0.20, 'bank_seed': 42, 'pretext_step': 64, 'num_rand_patches': 5, 'temperature': 1.0, 'alpha': 10.0, 'ema_weight': 0.5, 'triplet_margin': 0.5, 'positive_radius': 2, 'embed_dim': 64, 'projection_dim': 256, 'use_revin': True, 'use_teacher': True, 'bank_k': 1024, 'top_k': 3, 'mag_weight_unit_eu': 0.667, 't2_weight_unit_eu': 0.2, 't2_window': 32, 'device': 'auto'},
-    'SHADE': {'base_url': 'https://shade.avara-ai.com', 'split': 'eval', 'prefix_precision_guard': True, 'prefix_precision_guard_min_length': 50000, 'prefix_precision_guard_anchors': 1},
 }
