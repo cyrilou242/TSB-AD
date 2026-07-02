@@ -8,7 +8,7 @@ from .utils.slidingWindows import find_length_rank
 Unsupervise_AD_Pool = ['FFT', 'SR', 'NORMA', 'Series2Graph', 'Sub_IForest', 'IForest', 'LOF', 'Sub_LOF', 'POLY', 'MatrixProfile', 'Sub_PCA', 'PCA', 'HBOS',
                         'Sub_HBOS', 'KNN', 'Sub_KNN','KMeansAD', 'KMeansAD_U', 'KShapeAD', 'COPOD', 'CBLOF', 'COF', 'EIF', 'RobustPCA', 'MMPAD', 'Lag_Llama', 'TimesFM', 'Chronos', 'MOMENT_ZS', 'TSPulse_ZS', 'Time_RCD', 'HSF_U', 'HSF_Causal']
 Semisupervise_AD_Pool = ['Left_STAMPi', 'SAND', 'MCD', 'Sub_MCD', 'OCSVM', 'Sub_OCSVM', 'AutoEncoder', 'CNN', 'LSTMAD', 'TranAD', 'USAD', 'OmniAnomaly', 'PatchTST',
-                        'AnomalyTransformer', 'TimesNet', 'FITS', 'Donut', 'OFA', 'MOMENT_FT', 'M2N2', 'TSPulse_FT', 'xLSTMAD', 'CHARM', 'StreamVAE', 'HSF', 'PaAno_PAI', 'SHADE']
+                        'AnomalyTransformer', 'TimesNet', 'FITS', 'Donut', 'OFA', 'MOMENT_FT', 'M2N2', 'TSPulse_FT', 'xLSTMAD', 'CHARM', 'StreamVAE', 'HSF', 'PaAno_PAI', 'SHADE', 'TimeRCD_MAFT']
 
 def run_Unsupervise_AD(model_name, data, **kwargs):
     try:
@@ -580,3 +580,43 @@ def run_CHARM(
         MinMaxScaler(feature_range=(0, 1)).fit_transform(score.reshape(-1, 1)).ravel()
     )
     return score
+
+def run_TimeRCD_MAFT_FT(
+    data_train,
+    data_test,
+    win_size=64,
+    weight=0.5,
+    lr_adapter=1e-3,
+    epochs_adapter=5,
+    adapter_mode="train",
+    device="cpu",
+    adapter_checkpoint_dir="checkpoints/MAFT",
+    fusion="add",
+    timercd_win_size=15000,
+    timercd_checkpoint="checkpoints/time-rcd/pretrain_checkpoint_best_uni.pth",
+    filename=None,
+    **kwargs,
+):
+    from .models.TimeRCD_MAFT import run_maft
+
+    if filename is None:
+        filename = f"official_tr_{len(data_train)}_1st_0.csv"
+
+    return run_maft(
+        filename=filename,
+        data=data_test,
+        win_size=win_size,
+        weight=weight,
+        lr_adapter=lr_adapter,
+        epochs_adapter=epochs_adapter,
+        mode=adapter_mode,
+        device=device,
+        adapter_checkpoint_dir=adapter_checkpoint_dir,
+        fusion=fusion,
+        timercd_win_size=timercd_win_size,
+        timercd_checkpoint=timercd_checkpoint,
+    ).ravel()
+
+
+def run_TimeRCD_MAFT(*args, **kwargs):
+    return run_TimeRCD_MAFT_FT(*args, **kwargs)

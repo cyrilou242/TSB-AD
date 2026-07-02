@@ -88,6 +88,12 @@ Multi_algo_HP_dict = {
     'Time_RCD': {
         'win_size': [15000]
     },
+    'TimeRCD_MAFT': {
+        'win_size': [64, 512],
+        'fusion': ['mul', 'add'],
+        'weight': [0.01, 0.1, 0.2, 0.5, 0.6, 0.99],
+        'lr_adapter': [1e-3, 5e-4],
+    },
     'xLSTMAD': {
         'window_size': [50, 100, 150],
         'lr': [0.001],
@@ -320,6 +326,7 @@ Optimal_Uni_algo_HP_dict = {
     'MOMENT_FT': {'win_size': 64},
     'M2N2': {},
     'Time_RCD': {'win_size': 15000, 'batch_size': 64},
+    'TimeRCD_MAFT': {'win_size': 512, 'weight': 0.2, 'fusion': 'mul', 'lr_adapter': 1e-3, 'epochs_adapter': 5},
     'TSPulse_ZS': {'win_size': 96, 
                    'prediction_mode': 'time'},
     'TSPulse_FT': {'win_size': 96, 
