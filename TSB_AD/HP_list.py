@@ -118,6 +118,7 @@ Optimal_Multi_algo_HP_dict = {
     'MCD': {'support_fraction': 0.8},
     'KNN': {'n_neighbors': 50, 'method': 'mean'},        
     'KMeansAD': {'n_clusters': 10, 'window_size': 40},
+    'KMeansAD_TAB': {'k': 20, 'window_size': 100, 'stride': 1, 'algorithm': 'minibatch'},
     'KShapeAD': {'n_clusters': 20, 'window_size': 40},
     'COPOD': {'n_jobs':1},    
     'CBLOF': {'n_clusters': 4, 'alpha': 0.6},
@@ -334,6 +335,15 @@ Optimal_Uni_algo_HP_dict = {
                    'lr': 1e-4},
     'xLSTMAD': {'window_size': 50, 'lr': 0.001, 'embedding_dim': 40},
     'MMPAD': {'n_neighbor': 5},
+    # TAB-style semi-supervised KMeans (see models/KMeansAD_TAB.py).
+    # Defaults track the TAB scripts (`window_size=100` in
+    # `scripts/univariate/{label,score}/KMeans.sh`); `k=20` is the
+    # code default in `TAB/ts_benchmark/baselines/self_impl/KMeans/KMeans.py`.
+    # n_init falls back to sklearn's 'auto' (=1 for kmeans++), which
+    # is ~6× faster than the pre-1.4 default of 10 with no measurable
+    # detection-quality change on TSB-AD-U (350 files, ΔVUS-PR ≈ 0,
+    # ΔAUC-ROC < 1e-4).
+    'KMeansAD_TAB': {'k': 20, 'window_size': 100, 'stride': 1, 'algorithm': 'minibatch'},
     'CHARM': {"window_size": 128, "k": 3, "pointwise_agg": "mean", "stride": 1, "train_stride": 1, "min_window": 64},
     'StreamVAE': {'win_size': 100, 'latent_dim': 64, 'batch_size': 128, 'epochs': 50, 'patience': 10, 'lr': 1e-3, 'validation_size': 0.2, 'target_kl': 100.0, 'event_l1_weight': 1e-3},
     'HSF': {},

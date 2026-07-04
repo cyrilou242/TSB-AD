@@ -6,8 +6,8 @@ from sklearn.preprocessing import MinMaxScaler
 from .utils.slidingWindows import find_length_rank
 
 Unsupervise_AD_Pool = ['FFT', 'SR', 'NORMA', 'Series2Graph', 'Sub_IForest', 'IForest', 'LOF', 'Sub_LOF', 'POLY', 'MatrixProfile', 'Sub_PCA', 'PCA', 'HBOS',
-                        'Sub_HBOS', 'KNN', 'Sub_KNN','KMeansAD', 'KMeansAD_U', 'KShapeAD', 'COPOD', 'CBLOF', 'COF', 'EIF', 'RobustPCA', 'MMPAD', 'Lag_Llama', 'TimesFM', 'Chronos', 'MOMENT_ZS', 'TSPulse_ZS', 'Time_RCD', 'HSF_U', 'HSF_Causal']
-Semisupervise_AD_Pool = ['Left_STAMPi', 'SAND', 'MCD', 'Sub_MCD', 'OCSVM', 'Sub_OCSVM', 'AutoEncoder', 'CNN', 'LSTMAD', 'TranAD', 'USAD', 'OmniAnomaly', 'PatchTST',
+                        'Sub_HBOS', 'KNN', 'Sub_KNN','KMeansAD', 'KMeansAD_U', 'KShapeAD', 'COPOD', 'CBLOF', 'COF', 'EIF', 'RobustPCA', 'MMPAD', 'Lag_Llama', 'TimesFM', 'Chronos', 'MOMENT_ZS', 'TSPulse_ZS', 'Time_RCD', 'HSF_U', 'HSF_Causal', 'HampelAD']
+Semisupervise_AD_Pool = ['Left_STAMPi', 'SAND', 'MCD', 'Sub_MCD', 'OCSVM', 'Sub_OCSVM', 'AutoEncoder', 'CNN', 'LSTMAD', 'TranAD', 'USAD', 'OmniAnomaly', 'PatchTST', 'KMeansAD_TAB',
                         'AnomalyTransformer', 'TimesNet', 'FITS', 'Donut', 'OFA', 'MOMENT_FT', 'M2N2', 'TSPulse_FT', 'xLSTMAD', 'CHARM', 'StreamVAE', 'HSF', 'PaAno_PAI', 'SHADE', 'TimeRCD_MAFT']
 
 def run_Unsupervise_AD(model_name, data, **kwargs):
@@ -216,6 +216,25 @@ def run_KNN(data, slidingWindow=1, n_neighbors=10, method='largest', n_jobs=1):
     clf = KNN(slidingWindow=slidingWindow, n_neighbors=n_neighbors, method=method, n_jobs=n_jobs)
     clf.fit(data)
     score = clf.decision_scores_
+    return score.ravel()
+
+def run_KMeansAD_TAB(data_train, data_test, k=20, window_size=100, stride=1,
+                     n_init='auto', algorithm='kmeans', batch_size=1024,
+                     cache_dir=None, cache_key=None):
+    from .models.KMeansAD_TAB import KMeansAD_TAB
+    clf = KMeansAD_TAB(
+        k=k, window_size=window_size, stride=stride, n_init=n_init,
+        algorithm=algorithm, batch_size=batch_size,
+        cache_dir=cache_dir, cache_key=cache_key,
+    )
+    clf.fit(data_train)
+    return clf.decision_function(data_test).ravel()
+
+
+def run_HampelAD(data, window_size=100, eps=1e-9):
+    from .models.HampelAD import HampelAD
+    clf = HampelAD(window_size=window_size, eps=eps)
+    score = clf.decision_function(data)
     return score.ravel()
 
 def run_KMeansAD(data, n_clusters=20, window_size=20, n_jobs=1):
